@@ -3,8 +3,8 @@ import { Col, Row } from 'react-grid-system';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import SearchInput from '../../components/searchInput';
-import pokespeareApi from '../../services/pokespeareApi';
-import { IPokemonTypeName } from '../../util/colours';
+import { listPokemon, searchPokemon, getPokemon } from '../../services/pokespeareApi';
+import { IPokemonListResponse, IPokemonItem } from '../../models/index';
 
 import {
     Card,
@@ -15,29 +15,6 @@ import {
     Details,
     Item
 } from './styles';
-
-interface IPokemonListResponse {
-    totalCount: number;
-    data: IPokemonListItem[];
-}
-
-interface IPokemonResponse {
-    data: IPokemonItem;
-}
-
-interface IPokemonListItem {
-    id: number;
-    name: string;
-}
-
-interface IPokemonItem {
-    id: number;
-    name: string;
-    description: string;
-    sprite: string;
-    type: IPokemonTypeName;
-    translated: boolean;
-}
 
 const Home: React.FC = () => {
     const [loading, setLoading] = useState(true);
@@ -51,62 +28,41 @@ const Home: React.FC = () => {
 
     const [search, setSearch] = useState('');
 
-    const buildPokemonListUrl = (reload: boolean) => {
-        const take = 20;
-        const skip = reload ? 0 : pokemonList.data.length;
-
-        return (search === '') ?
-            `/pokemon?take=${take}&skip=${skip}` :
-            `/pokemon?searchTerm=${search}&take=${take}&skip=${skip}`;
-    };
-
     useEffect(() => {
-        const url = buildPokemonListUrl(true);
-        pokespeareApi.get<IPokemonListResponse>(url).then(response => {
-            const pokemon = response.data;
-
+        listPokemon().then(pokemon => {
             if (pokemon && pokemon.data.length > 0) {
                 setPokemonList(pokemon);
 
                 const firstPokemonData = pokemon.data[0];
-                updatePokemon(firstPokemonData.id);
+                selectPokemon(firstPokemonData.id);
             }
         });
     }, []);
 
     useEffect(() => {
-        const url = buildPokemonListUrl(true);
-        pokespeareApi.get<IPokemonListResponse>(url).then(response => {
-            const pokemon = response.data;
-
+        searchPokemon(search).then(pokemon => {
             if (pokemon && pokemon.data.length > 0) {
                 setPokemonList(pokemon);
 
                 const firstPokemonData = pokemon.data[0];
-                updatePokemon(firstPokemonData.id);
+                selectPokemon(firstPokemonData.id);
             }
         });
     }, [search]);
 
-    const searchPokemon = async (searchTerm: string) => {
-        setSearch(searchTerm);
-    };
-
     const loadMorePokemon = async () => {
-        const url = buildPokemonListUrl(false);
-        pokespeareApi.get<IPokemonListResponse>(url).then(response => {
+        listPokemon(pokemonList.data.length).then(pokemon => {
             setPokemonList({
-                totalCount: response.data.totalCount,
-                data: [...pokemonList.data, ...response.data.data]
+                totalCount: pokemon.totalCount,
+                data: [...pokemonList.data, ...pokemon.data]
             });
         });
     };
 
-    const updatePokemon = async (id: number) => {
+    const selectPokemon = async (id: number) => {
         if (pokemon.id !== id) {
-            pokespeareApi.get<IPokemonResponse>(`/pokemon/${id}`).then(response => {
-                const pokemonResponse = response.data;
-                setPokemon(pokemonResponse.data);
+            getPokemon(id).then(pokemon => {
+                setPokemon(pokemon.data);
                 setLoading(false);
             });
         }
@@ -121,7 +77,7 @@ const Home: React.FC = () => {
                     <SearchInput
                         type="text"
                         placeholder="Search"
-                        handleSearch={searchPokemon}
+                        handleSearch={setSearch}
                     />
                     <PokemonList backgroundColor={pokemon.type}>
                         <div id="scrollableDiv">
@@ -136,7 +92,7 @@ const Home: React.FC = () => {
                                     pokemonList.data.map(p => (
                                         <Item
                                             key={p.id}
-                                            onClick={() => updatePokemon(p.id)}
+                                            onClick={() => selectPokemon(p.id)}
                                             selected={pokemon.id === p.id}
                                         >
                                             <p>{`${p.id} - ${p.name}`}</p>

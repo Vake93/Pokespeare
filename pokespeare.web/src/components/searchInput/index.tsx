@@ -8,7 +8,7 @@ import React, {
   import { Container } from './styles';
   
   interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    handleSearch(id: string): Promise<void>;
+    handleSearch(id: string): any;
   }
   
   const SearchInput: React.FC<InputProps> = ({ handleSearch, ...rest }) => {
