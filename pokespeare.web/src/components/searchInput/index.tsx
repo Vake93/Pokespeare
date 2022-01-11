@@ -26,8 +26,8 @@ import React, {
     return (
       <Container>
         <form onSubmit={handleSubmit}>
-          <input {...rest} onChange={handleChange} value={inputValue} />
-          <button type="submit">Search</button>
+          <input role="search" {...rest} onChange={handleChange} value={inputValue} />
+          <button role="submit" type="submit">Search</button>
         </form>
       </Container>
     );

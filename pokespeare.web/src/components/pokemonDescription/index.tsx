@@ -11,8 +11,8 @@ const pokemonDescription: React.FC<PokemonDescriptionProps> = ({ selectedPokemon
     return (
         <Container backgroundColor={selectedPokemon.type}>
             <div>
-                <p>{selectedPokemon.description}</p>
-                <p>{`Shakespearean: ${selectedPokemon.translated}`}</p>
+                <p role='description'>{selectedPokemon.description}</p>
+                <p role='translated'>{`Shakespearean: ${selectedPokemon.translated}`}</p>
             </div>
         </Container>
     );
