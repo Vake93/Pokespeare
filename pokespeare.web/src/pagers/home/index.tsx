@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-grid-system';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 import SearchInput from '../../components/searchInput';
+import PokemonName from '../../components/pokemonName';
+import PokemonList from '../../components/pokemonList';
+import PokemonSprite from '../../components/pokemonSprite';
+import PokemonDescription from '../../components/pokemonDescription';
+
 import { listPokemon, searchPokemon, getPokemon } from '../../services/pokespeareApi';
 import { IPokemonListResponse, IPokemonItem } from '../../models/index';
 
-import {
-    Card,
-    Container,
-    PokemonList,
-    PokemonName,
-    PokemonSprite,
-    Details,
-    Item
-} from './styles';
+import { Container } from './styles';
 
 const Home: React.FC = () => {
     const [loading, setLoading] = useState(true);
@@ -79,54 +75,28 @@ const Home: React.FC = () => {
                         placeholder="Search"
                         handleSearch={setSearch}
                     />
-                    <PokemonList backgroundColor={pokemon.type}>
-                        <div id="scrollableDiv">
-                            <InfiniteScroll
-                                dataLength={pokemonList.data.length}
-                                next={loadMorePokemon}
-                                hasMore={pokemonList.data.length < pokemonList.totalCount}
-                                loader={<h4>Loading...</h4>}
-                                endMessage={<p>That's all folks!</p>}
-                                scrollableTarget="scrollableDiv">
-                                {
-                                    pokemonList.data.map(p => (
-                                        <Item
-                                            key={p.id}
-                                            onClick={() => selectPokemon(p.id)}
-                                            selected={pokemon.id === p.id}
-                                        >
-                                            <p>{`${p.id} - ${p.name}`}</p>
-                                        </Item>
-                                    ))
-                                }
-                            </InfiniteScroll>
-                        </div>
-                    </PokemonList>
+                    <PokemonList
+                        selectedPokemon={pokemon}
+                        pokemonList={pokemonList}
+                        loadMorePokemon={loadMorePokemon}
+                        selectPokemon={selectPokemon}
+                    />
                 </Col>
 
                 <Col lg={7}>
                     <Row>
                         <Col>
-                            <Card backgroundColor={pokemon.type}>
-                                <PokemonName>
-                                    <h1>{pokemon.name}</h1>
-                                </PokemonName>
-                            </Card>
+                            <PokemonName selectedPokemon={pokemon} />
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <PokemonSprite src={pokemon.sprite} />
+                            <PokemonSprite selectedPokemon={pokemon} />
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <Details backgroundColor={pokemon.type}>
-                                <div>
-                                    <p>{pokemon.description}</p>
-                                    <p>{`Shakespearean: ${pokemon.translated}`}</p>
-                                </div>
-                            </Details>
+                            <PokemonDescription selectedPokemon={pokemon} />
                         </Col>
                     </Row>
                 </Col>
