@@ -17,9 +17,9 @@ builder.Services.AddConfiguration(builder.Configuration);
 
 builder.Services.AddPokemonRepository();
 
-builder.Services.AddTranslatorService();
+builder.Services.AddPokemonCache();
 
-builder.Services.AddMemoryCache();
+builder.Services.AddTranslatorService();
 
 builder.Services.AddEndpointsApiExplorer();
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Pokespeare.Extensions;
 using Pokespeare.Models;
 using Polly;
@@ -13,17 +12,17 @@ public class TranslatorService : ITranslatorService
     private readonly IAsyncPolicy<TranslationResponse?> _policy;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly Configuration _configuration;
-    private readonly IMemoryCache _memoryCache;
+    private readonly IPokemonCache _pokemonCache;
     private readonly ILogger _logger;
 
     public TranslatorService(
         IOptions<Configuration> configuration,
         IHttpClientFactory httpClientFactory,
         ILogger<TranslatorService> logger,
-        IMemoryCache memoryCache)
+        IPokemonCache pokemonCache)
     {
         _logger = logger;
-        _memoryCache = memoryCache;
+        _pokemonCache = pokemonCache;
         _configuration = configuration.Value;
         _httpClientFactory = httpClientFactory;
 
@@ -44,7 +43,7 @@ public class TranslatorService : ITranslatorService
         var request = new TranslationRequest(text);
         var key = text.GetHashCode();
 
-        if (_memoryCache.TryGetValue<TranslationResult>(key, out var translationResult))
+        if (_pokemonCache.TryGetValue<TranslationResult>(key, out var translationResult))
         {
             _logger.LogInformation("Using cached translation result");
             return translationResult;
@@ -68,7 +67,7 @@ public class TranslatorService : ITranslatorService
             Text = response.Contents.Translated,
         };
 
-        _memoryCache.Set(key, translationResult, TimeSpan.FromMinutes(_configuration.TranslationCacheMinutes));
+        _pokemonCache.Set(key, translationResult, TimeSpan.FromMinutes(_configuration.TranslationCacheMinutes));
 
         return translationResult;
     }

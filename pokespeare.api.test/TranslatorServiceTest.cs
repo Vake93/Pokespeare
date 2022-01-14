@@ -27,9 +27,9 @@ public class TranslatorServiceTest
 
         var httpClientFactory = TestHelpers.CreateTestHttpClientFactory(HttpStatusCode.OK, translationResponse);
         var logger = TestHelpers.CreateTestLogger<TranslatorService>();
-        var memoryCache = TestHelpers.CreateTestMemoryCache();
+        var pokemonCache = TestHelpers.CreateTestPokemonCache();
 
-        var translatorService = new TranslatorService(configuration, httpClientFactory, logger, memoryCache);
+        var translatorService = new TranslatorService(configuration, httpClientFactory, logger, pokemonCache);
 
         var result = await translatorService.TranslateAsync(fixture.Create<string>()).ConfigureAwait(false);
 
@@ -56,9 +56,9 @@ public class TranslatorServiceTest
 
         var httpClientFactory = TestHelpers.CreateTestHttpClientFactory(HttpStatusCode.TooManyRequests, translationResponse, () => requestCount++);
         var logger = TestHelpers.CreateTestLogger<TranslatorService>();
-        var memoryCache = TestHelpers.CreateTestMemoryCache();
+        var pokemonCache = TestHelpers.CreateTestPokemonCache();
 
-        var translatorService = new TranslatorService(configuration, httpClientFactory, logger, memoryCache);
+        var translatorService = new TranslatorService(configuration, httpClientFactory, logger, pokemonCache);
 
         //Make sure the translation fails
         var result = await translatorService.TranslateAsync(fixture.Create<string>()).ConfigureAwait(false);

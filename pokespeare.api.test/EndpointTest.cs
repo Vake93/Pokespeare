@@ -98,9 +98,9 @@ public class EndpointTest
 
         var httpClientFactory = TestHelpers.CreateTestHttpClientFactory(HttpStatusCode.OK, translationResponse);
         var Translatorlogger = TestHelpers.CreateTestLogger<TranslatorService>();
-        var memoryCache = TestHelpers.CreateTestMemoryCache();
+        var pokemonCache = TestHelpers.CreateTestPokemonCache();
 
-        var translatorService = new TranslatorService(configuration, httpClientFactory, Translatorlogger, memoryCache);
+        var translatorService = new TranslatorService(configuration, httpClientFactory, Translatorlogger, pokemonCache);
 
         var response = await Endpoints.GetPokemonAsync(pokemonRepository, translatorService, 1).ConfigureAwait(false);
 
@@ -136,9 +136,9 @@ public class EndpointTest
 
         var httpClientFactory = TestHelpers.CreateTestHttpClientFactory(HttpStatusCode.TooManyRequests, translationResponse);
         var Translatorlogger = TestHelpers.CreateTestLogger<TranslatorService>();
-        var memoryCache = TestHelpers.CreateTestMemoryCache();
+        var pokemonCache = TestHelpers.CreateTestPokemonCache();
 
-        var translatorService = new TranslatorService(configuration, httpClientFactory, Translatorlogger, memoryCache);
+        var translatorService = new TranslatorService(configuration, httpClientFactory, Translatorlogger, pokemonCache);
 
         var response = await Endpoints.GetPokemonAsync(pokemonRepository, translatorService, 1).ConfigureAwait(false);
 
@@ -174,9 +174,9 @@ public class EndpointTest
 
         var httpClientFactory = TestHelpers.CreateTestHttpClientFactory(HttpStatusCode.OK, translationResponse);
         var Translatorlogger = TestHelpers.CreateTestLogger<TranslatorService>();
-        var memoryCache = TestHelpers.CreateTestMemoryCache();
+        var pokemonCache = TestHelpers.CreateTestPokemonCache();
 
-        var translatorService = new TranslatorService(configuration, httpClientFactory, Translatorlogger, memoryCache);
+        var translatorService = new TranslatorService(configuration, httpClientFactory, Translatorlogger, pokemonCache);
 
         var response = await Endpoints.GetPokemonAsync(pokemonRepository, translatorService, 4096).ConfigureAwait(false);
 

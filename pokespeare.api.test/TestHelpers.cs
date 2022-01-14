@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Moq.Protected;
+using Pokespeare.Services;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -19,13 +20,15 @@ internal static class TestHelpers
 {
     public static ILogger<T> CreateTestLogger<T>() => NullLogger<T>.Instance;
 
-    public static IMemoryCache CreateTestMemoryCache()
+    public static IPokemonCache CreateTestPokemonCache()
     {
         var services = new ServiceCollection();
         services.AddMemoryCache();
         var serviceProvider = services.BuildServiceProvider();
 
-        return serviceProvider.GetRequiredService<IMemoryCache>();
+        var memoryCache = serviceProvider.GetRequiredService<IMemoryCache>();
+
+        return new PokemonCache(memoryCache);
     }
 
     public static IHttpClientFactory CreateTestHttpClientFactory(HttpStatusCode httpStatus, TranslationResponse response, Action? callback = null)
