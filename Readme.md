@@ -31,7 +31,7 @@ And open [localhost:5000](http://localhost:5000/) in a browser
 - pokespear.data - Contains a console application to convert CSV files from [pokeapi.co](https://pokeapi.co/) to JSON format
 - pokespeare.api - Contains the web service.
 - pokespeare.api.test - Unit and Integration tests for web service
-- pokespeare.web - React web app project.
+- pokespeare.web - React web app project and unit tests for React components
 
 ## Attributions
 - PokeAPI - For the Pokémon data [Link](https://github.com/PokeAPI/pokeapi)
