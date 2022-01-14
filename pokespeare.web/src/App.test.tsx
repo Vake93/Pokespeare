@@ -33,27 +33,27 @@ describe("Testing Components", () => {
     ]
   };
 
-  test('Pokemon name', () => {
+  test('Pokemon name is rendered correctly', () => {
     render(<PokemonName selectedPokemon={pokemon} />);
     const h1 = screen.getByText(pokemon.name);
     expect(h1).toBeInTheDocument();
   });
 
-  test('Pokemon description', () => {
+  test('Pokemon description is rendered correctly', () => {
     render(<PokemonDescription selectedPokemon={pokemon} />);
     const p = screen.getByRole('description');
     expect(p).toBeInTheDocument();
     expect(p).toHaveTextContent(pokemon.description);
   });
 
-  test('Pokemon translation status value', () => {
+  test('Pokemon translation status value is rendered correctly', () => {
     render(<PokemonDescription selectedPokemon={pokemon} />);
     const p = screen.getByRole('translated');
     expect(p).toBeInTheDocument();
     expect(p).toHaveTextContent(`Shakespearean: ${pokemon.translated}`);
   });
 
-  test('Pokemon sprite', () => {
+  test('Pokemon sprite has correct image url', () => {
     render(<PokemonSprite selectedPokemon={pokemon} />);
     const img = screen.getByRole('sprite');
     expect(img).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe("Testing Components", () => {
     });
   });
 
-  test("Pokemon list has correct count", () => {
+  test("Pokemon list is rendered correctly", () => {
     const selectPokemon = jest.fn();
     const loadMorePokemon = jest.fn();
 
@@ -74,7 +74,7 @@ describe("Testing Components", () => {
     expect(items[1]).toHaveTextContent(`${pokemonList.data[1].id} - ${pokemonList.data[1].name}`);
   });
 
-  test("Pokemon list selected item", () => {
+  test("Pokemon list selected item has border colour set", () => {
     const selectPokemon = jest.fn();
     const loadMorePokemon = jest.fn();
 
@@ -89,7 +89,7 @@ describe("Testing Components", () => {
     });
   });
 
-  test("Pokemon list calls selectPokemon on click", () => {
+  test("Pokemon list executes callback on item click", () => {
     const selectPokemon = jest.fn();
     const loadMorePokemon = jest.fn();
 
@@ -103,7 +103,7 @@ describe("Testing Components", () => {
     expect(loadMorePokemon).not.toHaveBeenCalled();
   });
 
-  test("Pokemon list calls loadMorePokemon on scroll", () => {
+  test("Pokemon list executes load more data call back on scroll", () => {
     const selectPokemon = jest.fn();
     const loadMorePokemon = jest.fn();
 
@@ -117,7 +117,7 @@ describe("Testing Components", () => {
     expect(loadMorePokemon).toHaveBeenCalled();
   });
 
-  test("Search Input calls handleSearch on submit", () =>{
+  test("Search Input executes callback on submit", () =>{
     const handleSearch = jest.fn();
     render(<SearchInput handleSearch={handleSearch} />);
 
