@@ -35,27 +35,28 @@ describe("Testing Components", () => {
 
   test('Pokemon name is rendered correctly', () => {
     render(<PokemonName selectedPokemon={pokemon} />);
-    const h1 = screen.getByText(pokemon.name);
+    const h1 = screen.getByTestId('pokemonName');
     expect(h1).toBeInTheDocument();
+    expect(h1).toHaveTextContent(pokemon.name);
   });
 
   test('Pokemon description is rendered correctly', () => {
     render(<PokemonDescription selectedPokemon={pokemon} />);
-    const p = screen.getByRole('description');
+    const p = screen.getByTestId('description');
     expect(p).toBeInTheDocument();
     expect(p).toHaveTextContent(pokemon.description);
   });
 
   test('Pokemon translation status value is rendered correctly', () => {
     render(<PokemonDescription selectedPokemon={pokemon} />);
-    const p = screen.getByRole('translated');
+    const p = screen.getByTestId('translated');
     expect(p).toBeInTheDocument();
     expect(p).toHaveTextContent(`Shakespearean: ${pokemon.translated}`);
   });
 
   test('Pokemon sprite has correct image url', () => {
     render(<PokemonSprite selectedPokemon={pokemon} />);
-    const img = screen.getByRole('sprite');
+    const img = screen.getByTestId('sprite');
     expect(img).toBeInTheDocument();
     expect(img).toHaveStyle({
       background: `url(${pokemon.sprite}) no-repeat center`
@@ -68,7 +69,7 @@ describe("Testing Components", () => {
 
     render(<PokemonList selectedPokemon={pokemon} pokemonList={pokemonList} selectPokemon={selectPokemon} loadMorePokemon={loadMorePokemon} />);
 
-    var items = screen.getAllByRole('item');
+    var items = screen.getAllByTestId('item');
     expect(items).toHaveLength(pokemonList.data.length);
     expect(items[0]).toHaveTextContent(`${pokemonList.data[0].id} - ${pokemonList.data[0].name}`);
     expect(items[1]).toHaveTextContent(`${pokemonList.data[1].id} - ${pokemonList.data[1].name}`);
@@ -80,7 +81,7 @@ describe("Testing Components", () => {
 
     render(<PokemonList selectedPokemon={pokemon} pokemonList={pokemonList} selectPokemon={selectPokemon} loadMorePokemon={loadMorePokemon} />);
 
-    var items = screen.getAllByRole('item');
+    var items = screen.getAllByTestId('item');
     expect(items[0]).toHaveStyle({
       "border-color": "#404040"
     });
@@ -95,7 +96,7 @@ describe("Testing Components", () => {
 
     render(<PokemonList selectedPokemon={pokemon} pokemonList={pokemonList} selectPokemon={selectPokemon} loadMorePokemon={loadMorePokemon} />);
 
-    var items = screen.getAllByRole('item');
+    var items = screen.getAllByTestId('item');
 
     fireEvent.click(items[1]);
 
@@ -109,7 +110,7 @@ describe("Testing Components", () => {
 
     render(<PokemonList selectedPokemon={pokemon} pokemonList={pokemonList} selectPokemon={selectPokemon} loadMorePokemon={loadMorePokemon} />);
 
-    var scrollableDiv = screen.getByRole('scrollableDiv');
+    var scrollableDiv = screen.getByTestId('scrollableDiv');
 
     fireEvent.scroll(scrollableDiv);
 
@@ -121,11 +122,11 @@ describe("Testing Components", () => {
     const handleSearch = jest.fn();
     render(<SearchInput handleSearch={handleSearch} />);
 
-    const input = screen.getByRole('search');
+    const input = screen.getByTestId('search');
     fireEvent.change(input, { target: { value: 'bulbasaur' } });
     expect(input).toHaveValue('bulbasaur');
 
-    const submit = screen.getByRole('submit');
+    const submit = screen.getByTestId('submit');
     fireEvent.click(submit);
 
     expect(handleSearch).lastCalledWith('bulbasaur');

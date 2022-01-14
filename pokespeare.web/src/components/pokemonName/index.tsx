@@ -12,7 +12,7 @@ const pokemonName: React.FC<PokemonNameProps> = ({ selectedPokemon }) => {
     return (
         <Card backgroundColor={selectedPokemon.type}>
             <Container>
-                <h1>{selectedPokemon.name}</h1>
+                <h1 data-testid="pokemonName">{selectedPokemon.name}</h1>
             </Container>
         </Card>
     );

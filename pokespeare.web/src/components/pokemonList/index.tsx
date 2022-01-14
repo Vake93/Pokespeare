@@ -13,7 +13,7 @@ interface PokemonListProps {
 
 const pokemonList: React.FC<PokemonListProps> = ({ selectedPokemon, pokemonList, loadMorePokemon, selectPokemon }) => {
     return (<Container backgroundColor={selectedPokemon.type}>
-        <div id="scrollableDiv" role="scrollableDiv">
+        <div id="scrollableDiv" data-testid="scrollableDiv">
             <InfiniteScroll
                 dataLength={pokemonList.data.length}
                 next={loadMorePokemon}
@@ -24,7 +24,7 @@ const pokemonList: React.FC<PokemonListProps> = ({ selectedPokemon, pokemonList,
                 {
                     pokemonList.data.map(p => (
                         <Item
-                            role='item'
+                            data-testid='item'
                             key={p.id}
                             onClick={() => selectPokemon(p.id)}
                             selected={selectedPokemon.id === p.id}

@@ -9,7 +9,7 @@ interface PokemonSpriteProps {
 
 const pokemonSprite: React.FC<PokemonSpriteProps> = ({ selectedPokemon }) => {
     return (
-        <Container role='sprite' src={selectedPokemon.sprite} />
+        <Container data-testid='sprite' src={selectedPokemon.sprite} />
     );
 };
 
